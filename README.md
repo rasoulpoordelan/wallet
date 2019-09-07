@@ -8,7 +8,7 @@ it's a good way to handle concurrency most of the time it uses a field for handl
 it's another way to handle concurrency it's set lock in the database and your application and some time maybe you get in the pessimistic trap( set lock in reading time ).
 ### 3-Third party(Redlock)
 a system like redlock it's a great way because you move your lock to another system like redis and it's very faster than the database.
-### 4- database Internal Ability 
+### 4- Database Internal Ability 
 atomic database update, as you know insert, delete, update is atomic in the relational database and it doesn't any side effect and i use it for my applications most of the time.
 
 `[notice]` in this situation I use `Database Internal Ability` for our wallet balance because it can satisfy our concurrency problem very well
