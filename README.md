@@ -43,7 +43,11 @@ atomic database update, as you know insert, delete, update is atomic in the rela
  ### get all player transaction
  method `get` url `localhost:8009/wallet/playerTransaction/{playerId}`
 
-### Todos
+## database ability way
+ I think when using database ability your application is faster than other ways and doesn't have any race Condition problem and this way it's amazing for high-performance applications.
+
+
+## Todos
 
  - Write MORE Tests (because I don't have enough time)
  - Add swagger
