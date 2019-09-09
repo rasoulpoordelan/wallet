@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "wallet_transaction", uniqueConstraints = @UniqueConstraint(columnNames = {"transaction_id"},name = "IX_UNIQUE_WALLET_TRANSACTION_TRANSACTION_ID"))
+@Table(name = "wallet_transaction", uniqueConstraints = @UniqueConstraint(columnNames = {"transaction_id"}, name = "IX_UNIQUE_WALLET_TRANSACTION_TRANSACTION_ID"))
 public class WalletTransaction {
 
     @Id
@@ -18,27 +18,27 @@ public class WalletTransaction {
     private Wallet wallet;
 
 
-    @Column(name = "transaction_id",length = 200)
+    @Column(name = "transaction_id", length = 200)
     private String transactionId;
 
     @Column(name = "amount")
     private double amount;
 
-    @Column(name = "balance")
-    private  double balance;
-
     @Column(name = "create_date")
     private LocalDateTime createDate;
+
+    @Column(name = "create_by",length = 200)
+    private String CreatedBy;
 
     public WalletTransaction() {
     }
 
-    public WalletTransaction(Wallet wallet, String transactionId, double amount, double balance, LocalDateTime createDate) {
+    public WalletTransaction(Wallet wallet, String transactionId, double amount, LocalDateTime createDate, String createdBy) {
         this.wallet = wallet;
         this.transactionId = transactionId;
         this.amount = amount;
-        this.balance = balance;
         this.createDate = createDate;
+        CreatedBy = createdBy;
     }
 
     public long getId() {
@@ -73,19 +73,19 @@ public class WalletTransaction {
         this.amount = amount;
     }
 
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
     public LocalDateTime getCreateDate() {
         return createDate;
     }
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
+    }
+
+    public String getCreatedBy() {
+        return CreatedBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        CreatedBy = createdBy;
     }
 }

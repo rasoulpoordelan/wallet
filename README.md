@@ -1,4 +1,4 @@
-# Wallet microservice
+# Wallet MicroService
 
 ## Concurrency Handling
 for handling concurrency, we can use different way
@@ -12,3 +12,38 @@ a system like redlock it's a great way because you move your lock to another sys
 atomic database update, as you know insert, delete, update is atomic in the relational database and it doesn't any side effect and i use it for my applications most of the time.
 
 `[notice]` in this situation I use `Database Internal Ability` for our wallet balance because it can satisfy our concurrency problem very well
+
+## Api Address
+
+### credit 
+  method `post` url `localhost:8009/wallet/credit`
+ body 
+ ```
+ {
+	"playerId":10,
+	"transactionId":"t1",
+	"amount":10.01
+}
+ ```
+ 
+ ### debit 
+  method `post` url `localhost:8009/wallet/debit`
+ body 
+ ```
+ {
+	"playerId":10,
+	"transactionId":"t2",
+	"amount":10.01
+}
+ ```
+ 
+  ### get player balance 
+  method `get` url `localhost:8009/wallet/balance/{playerId}`
+ 
+ ### get all player transaction
+ method `get` url `localhost:8009/wallet/playerTransaction/{playerId}`
+
+### Todos
+
+ - Write MORE Tests (because I don't have enough time)
+ - Add swagger

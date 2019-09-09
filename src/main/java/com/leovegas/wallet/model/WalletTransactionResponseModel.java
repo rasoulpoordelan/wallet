@@ -10,15 +10,13 @@ public class WalletTransactionResponseModel {
 
     private double amount;
 
-    private  double balance;
 
     private LocalDateTime createDate;
 
-    public WalletTransactionResponseModel(long playerId, String transactionId, double amount, double balance, LocalDateTime createDate) {
+    public WalletTransactionResponseModel(long playerId, String transactionId, double amount, LocalDateTime createDate) {
         this.playerId = playerId;
         this.transactionId = transactionId;
         this.amount = amount;
-        this.balance = balance;
         this.createDate = createDate;
     }
 
@@ -44,14 +42,6 @@ public class WalletTransactionResponseModel {
 
     public void setAmount(double amount) {
         this.amount = amount;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 
     public LocalDateTime getCreateDate() {

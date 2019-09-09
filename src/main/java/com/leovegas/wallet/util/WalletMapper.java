@@ -6,6 +6,8 @@ import com.leovegas.wallet.model.WalletResponseModel;
 import com.leovegas.wallet.model.WalletTransactionResponseModel;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class WalletMapper {
 
@@ -16,6 +18,6 @@ public class WalletMapper {
 
     public static WalletTransactionResponseModel walletTransactionToWalletTransactionReponseModel( WalletTransaction model)
     {
-        return new WalletTransactionResponseModel(model.getWallet().getPlayerId(),model.getTransactionId(),model.getAmount(),model.getBalance(),model.getCreateDate());
+        return new WalletTransactionResponseModel(model.getWallet().getPlayerId(),model.getTransactionId(),model.getAmount(),model.getCreateDate());
     }
 }

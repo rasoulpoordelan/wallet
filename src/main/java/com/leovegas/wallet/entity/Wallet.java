@@ -1,7 +1,5 @@
 package com.leovegas.wallet.entity;
 
-import com.leovegas.wallet.exception.InsufficientBalanceException;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -32,9 +30,6 @@ public class Wallet {
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<WalletTransaction> transactions = new HashSet<>();
 
-   /* @Version
-    private Integer version;*/
-
     public Wallet() {
     }
 
@@ -43,23 +38,6 @@ public class Wallet {
         this.createDate = createDate;
         this.updateDate = updateDate;
     }
-
-    public void credit(double amount) {
-        this.balance += amount;
-    }
-
-    public void debit(double amount) {
-        this.balance -= amount;
-        if (this.balance < 0)
-            throw new InsufficientBalanceException();
-    }
-
-    public void changeBalance(double amount) {
-        this.balance += amount;
-        if (this.balance < 0)
-            throw new InsufficientBalanceException();
-    }
-
 
     public long getId() {
         return id;

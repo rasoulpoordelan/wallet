@@ -9,12 +9,12 @@ import com.leovegas.wallet.model.WalletResponseModel;
 import com.leovegas.wallet.model.WalletTransactionResponseModel;
 import com.leovegas.wallet.repository.WalletRepository;
 import com.leovegas.wallet.repository.WalletTransactionRepository;
+import com.leovegas.wallet.service.TimeService;
 import com.leovegas.wallet.service.WalletService;
 import com.leovegas.wallet.util.WalletMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -31,55 +31,47 @@ public class WalletServiceImpl implements WalletService {
     @Autowired
     private WalletTransactionRepository walletTransactionRepository;
 
+    @Autowired
+    private TimeService timeService;
+
     @Override
     @Transactional
-    public WalletResponseModel credit(long playerId, double amount, String transactionId) {
-        return WalletMapper.walletToWalletResponseModel(
-                creditDebit(playerId, amount, transactionId)
-        );
+    public void credit(long playerId, double amount, String transactionId) {
+        creditDebitAction(playerId, amount, transactionId);
     }
 
     @Override
     @Transactional
-    public WalletResponseModel debit(long playerId, double amount, String transactionId) {
-        return WalletMapper.walletToWalletResponseModel(
-                creditDebit(playerId, amount * -1, transactionId)
-        );
+    public void debit(long playerId, double amount, String transactionId) {
+        creditDebitAction(playerId, amount * -1, transactionId);
     }
 
-    private Wallet creditDebit(long playerId, double amount, String transactionId) {
+    private void creditDebitAction(long playerId, double amount, String transactionId) {
+
+        LocalDateTime currentDate = timeService.now();
 
         Wallet wallet = walletRepository.findFirstByPlayerId(playerId);
         if (wallet == null) {
-            wallet = new Wallet(playerId, LocalDateTime.now(), LocalDateTime.now());
-            wallet.changeBalance(amount);
+            wallet = new Wallet(playerId, currentDate, currentDate);
             walletRepository.save(wallet);
         }
-        else
-        {
-           int change = walletRepository.updateBalance(playerId,amount);
-           if(change == 0)
-               throw  new InsufficientBalanceException();
 
-        }
-
-       /* wallet.changeBalance(amount);
-
-        walletRepository.save(wallet);*/
+        int change = walletRepository.updateBalance(playerId, amount, currentDate);
+        if (change == 0)
+            throw new InsufficientBalanceException();
 
         try {
-            walletTransactionRepository.save(new WalletTransaction(wallet, transactionId, amount, wallet.getBalance(), LocalDateTime.now()));
+            walletTransactionRepository.save(new WalletTransaction(wallet, transactionId, amount, currentDate, ""));
         } catch (DataIntegrityViolationException ex) {
             throw new DuplicateTransactionIdException();
         }
-        return wallet;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<WalletTransactionResponseModel> playerTransactions(long playerId) {
 
-        return walletTransactionRepository.findByPlayerId(playerId).stream()
+        return walletTransactionRepository.findAllByPlayerIdOrderByDesc(playerId).stream()
                 .map(i -> WalletMapper.walletTransactionToWalletTransactionReponseModel(i))
                 .collect(Collectors.toList());
     }

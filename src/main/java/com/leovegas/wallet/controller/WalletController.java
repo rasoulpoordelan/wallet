@@ -18,14 +18,16 @@ public class WalletController {
     private WalletService walletService;
 
     @RequestMapping(method = RequestMethod.POST, value = "credit")
-    public WalletResponseModel add(@RequestBody @Valid WalletRequestModel model) {
-        return walletService.credit(model.getPlayerId(), model.getAmount(), model.getTransactionId());
+    public boolean add(@RequestBody @Valid WalletRequestModel model) {
+         walletService.credit(model.getPlayerId(), model.getAmount(), model.getTransactionId());
+         return true;
     }
 
 
     @RequestMapping(method = RequestMethod.POST, value = "debit")
-    public WalletResponseModel debit(@RequestBody @Valid WalletRequestModel model) {
-        return walletService.debit(model.getPlayerId(), model.getAmount(), model.getTransactionId());
+    public boolean debit(@RequestBody @Valid WalletRequestModel model) {
+         walletService.debit(model.getPlayerId(), model.getAmount(), model.getTransactionId());
+         return true;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "balance/{playerId}")
